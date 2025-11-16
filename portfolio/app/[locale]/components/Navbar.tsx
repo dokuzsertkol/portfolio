@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import {useParams} from "next/navigation";
+import { useParams } from "next/navigation";
+import { useState } from "react";
+import { useTheme } from "next-themes";
 import ThemeToggle from "./ThemeToggle";
 import LocaleSwitcher from "./LocaleSwitcher";
 
@@ -10,7 +12,13 @@ type Props = {
 }
 
 export default function Navbar({t}: Props) {
+    const { resolvedTheme } = useTheme();
     const {locale} = useParams();
+    const [isOpen, setIsOpen] = useState(false);
+    const basePath = process.env.NODE_ENV === "production" ? "/portfolio" : "";
+
+    const hamburgerPath = resolvedTheme === "dark" ? `${basePath}/d_hamburger.svg` : `${basePath}/l_hamburger.svg`;
+    const closePath = resolvedTheme === "dark" ? `${basePath}/d_close.svg` : `${basePath}/l_close.svg`;
 
     return (
         <nav className="bg-l_base dark:bg-d_base shadow-md">
@@ -26,12 +34,26 @@ export default function Navbar({t}: Props) {
                         <li><Link href={`/${locale}/contact`}>{t.contact}</Link></li>
                         <li><Link href={`/${locale}/cv`}>{t.cv}</Link></li>
                     </ul>
-                    <ul className="hidden md:flex space-x-6">
+                    <ul className="flex space-x-6">
                         <li><LocaleSwitcher /></li>
                         <li><ThemeToggle /></li>
                     </ul>
+                    <button onClick={() => setIsOpen(!isOpen)} className="md:hidden p-2">
+                        <img src={isOpen ? closePath : hamburgerPath} alt="menu" className="w-4 h-4"/>
+                    </button>
                 </div>
             </div>
+            {isOpen && (
+                <div className="md:hidden bg-l_base dark:bg-d_base px-4 pb-4">
+                    <ul className="flex flex-col space-y-4">
+                        <li><Link href={`/${locale}`} onClick={() => setIsOpen(false)}>{t.home}</Link></li>
+                        <li><Link href={`/${locale}/about`} onClick={() => setIsOpen(false)}>{t.about}</Link></li>
+                        <li><Link href={`/${locale}/projects`} onClick={() => setIsOpen(false)}>{t.projects}</Link></li>
+                        <li><Link href={`/${locale}/contact`} onClick={() => setIsOpen(false)}>{t.contact}</Link></li>
+                        <li><Link href={`/${locale}/cv`} onClick={() => setIsOpen(false)}>{t.cv}</Link></li>
+                    </ul>
+                </div>
+            )}
         </nav>
     );
 }

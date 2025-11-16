@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 
 export default function LocaleSwitcher() {
-    const { theme } = useTheme();
+    const { resolvedTheme } = useTheme();
     const router = useRouter();
     const params = useParams();
     const currentLocale = params.locale as string ?? "en";
@@ -38,7 +38,7 @@ export default function LocaleSwitcher() {
 
     const trPath = basePath + "/tr.svg";
     const enPath = basePath + "/uk.svg";
-    const worldPath = theme === "dark" ? `${basePath}/d_world.svg` : `${basePath}/l_world.svg`;
+    const worldPath = resolvedTheme === "dark" ? `${basePath}/d_world.svg` : `${basePath}/l_world.svg`;
 
     return (
         <div className="relative" ref={dropdownRef}>
