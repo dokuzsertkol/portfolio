@@ -1,9 +1,13 @@
-import type { project } from '@/data/projects';
-import { useTheme } from "next-themes";
 import Link from "next/link";
 
-export default function ProjectCard ({title, keywords, imageUrl, href}: project) {
-    const { resolvedTheme } = useTheme();
+interface Props {
+    title: string;
+    keywords: string;
+    imageUrl: string;
+    href: string;
+}
+
+export default function ProjectCard ({title, keywords, imageUrl, href}: Props) {
     return (
         <Link href={href}>
             <div className="rounded-2xl h-full shadow-md border-l_base dark:border-d_base border-4 hover:bg-l_base hover:dark:bg-d_base bg-white dark:bg-black overflow-hidden hover:shadow-xl transition p-6">

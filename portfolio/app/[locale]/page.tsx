@@ -14,10 +14,9 @@ export default function HomePage() {
     const { resolvedTheme } = useTheme();
     const { locale } = useParams();
     const [mounted, setMounted] = useState(false);
-
+    
     const messages = useMessages();
     const t = messages.HomePage;
-
 
     useEffect(() => setMounted(true), []);
     if (!mounted) return null;
